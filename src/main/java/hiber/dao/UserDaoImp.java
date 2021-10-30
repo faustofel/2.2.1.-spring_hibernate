@@ -23,16 +23,17 @@ public class UserDaoImp implements UserDao {
    @Override
    @SuppressWarnings("unchecked")
    public List<User> listUsers() {
-      TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("FROM User");
-      return query.getResultList();
+      return sessionFactory.getCurrentSession().createQuery("FROM User").getResultList();
    }
 
    @Override
    @SuppressWarnings("unchecked")
-   public List<User> getUserByCar(String model, int series) {
-      TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("FROM User D WHERE D.car.model = :model AND D.car.series = :series");
-      query.setParameter("model", model);
-      query.setParameter("series", series);
-      return query.getResultList();
+   public User getUserByCar(String model, int series) {
+      return (User) sessionFactory
+              .getCurrentSession()
+              .createQuery("FROM User D WHERE D.car.model = :model AND D.car.series = :series")
+              .setParameter("model", model)
+              .setParameter("series", series)
+              .getSingleResult();
    }
 }
